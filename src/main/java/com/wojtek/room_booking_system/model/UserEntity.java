@@ -1,5 +1,9 @@
 package com.wojtek.room_booking_system.model;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -8,6 +12,9 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="users")
+@Data
+@Setter
+@Getter
 public class UserEntity {
 
     @Id

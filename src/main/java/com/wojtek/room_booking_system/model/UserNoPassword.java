@@ -7,14 +7,12 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class UserNoPassword {
 
     String login;
 
     String name;
 
     String surname;
-
-    String password;
 
 }
