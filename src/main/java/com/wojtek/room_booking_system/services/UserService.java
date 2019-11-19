@@ -5,10 +5,7 @@ import com.wojtek.room_booking_system.model.UserEntity;
 import com.wojtek.room_booking_system.model.UserNoPassword;
 import com.wojtek.room_booking_system.repositories.UserRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -50,7 +47,6 @@ public class UserService {
     }
 
     public List<UserNoPassword> getAllUsers() {
-        userRepository.findAll();
 
         List<UserNoPassword> list = new ArrayList<>();
         for (UserEntity item : userRepository.findAll()) {
