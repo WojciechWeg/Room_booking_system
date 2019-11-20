@@ -1,9 +1,9 @@
 package com.wojtek.room_booking_system.services;
 
-import com.wojtek.room_booking_system.model.User;
-import com.wojtek.room_booking_system.model.UserEntity;
-import com.wojtek.room_booking_system.model.UserNoPassword;
-import com.wojtek.room_booking_system.repositories.UserRepository;
+import com.wojtek.room_booking_system.dao.model.User;
+import com.wojtek.room_booking_system.dao.model.UserEntity;
+import com.wojtek.room_booking_system.dao.model.UserNoPassword;
+import com.wojtek.room_booking_system.dao.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;

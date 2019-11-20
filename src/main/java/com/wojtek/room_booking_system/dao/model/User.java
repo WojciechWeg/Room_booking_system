@@ -1,4 +1,4 @@
-package com.wojtek.room_booking_system.model;
+package com.wojtek.room_booking_system.dao.model;
 
 import lombok.*;
 
@@ -7,12 +7,14 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserNoPassword {
+public class User {
 
     String login;
 
     String name;
 
     String surname;
+
+    String password;
 
 }

@@ -1,10 +1,7 @@
 package com.wojtek.room_booking_system.controllers;
 
-import com.wojtek.room_booking_system.model.Room;
-import com.wojtek.room_booking_system.model.User;
-import com.wojtek.room_booking_system.model.UserNoPassword;
+import com.wojtek.room_booking_system.dao.model.Room;
 import com.wojtek.room_booking_system.services.RoomService;
-import com.wojtek.room_booking_system.services.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
