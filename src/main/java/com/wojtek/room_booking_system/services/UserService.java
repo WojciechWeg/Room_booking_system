@@ -4,6 +4,7 @@ import com.wojtek.room_booking_system.dao.model.User;
 import com.wojtek.room_booking_system.dao.model.UserEntity;
 import com.wojtek.room_booking_system.dao.model.UserNoPassword;
 import com.wojtek.room_booking_system.dao.repositories.UserRepository;
+import com.wojtek.room_booking_system.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ public class UserService {
 
     public void updateUser(String userLogin, User user) {
 
-        UserEntity userEntityUpdated = userRepository.findById(userLogin).orElseThrow(() ->  new RuntimeException("not found"));
+        UserEntity userEntityUpdated = userRepository.findById(userLogin).orElseThrow(ResourceNotFoundException::new);
 
         if(user.getName()!=null && !user.getName().isEmpty() && !user.getName().equals(userEntityUpdated.getName()) )
             userEntityUpdated.setName(user.getName());

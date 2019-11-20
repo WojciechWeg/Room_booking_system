@@ -4,6 +4,7 @@ import com.wojtek.room_booking_system.dao.model.Room;
 import com.wojtek.room_booking_system.services.RoomService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,12 +20,12 @@ public class RoomController {
     }
 
     @PutMapping()
-    public void createNewUser(@RequestBody Room room) {
+    public void createNewUser(@Valid @RequestBody Room room) {
         roomService.createNewRoom(room);
     }
 
     @PostMapping("/{roomName}")
-    public void update(@PathVariable String roomName, @RequestBody Room room){ roomService.updateRoom(roomName,room); }
+    public void update(@PathVariable String roomName, @Valid @RequestBody Room room){ roomService.updateRoom(roomName,room); }
 
     @DeleteMapping({"/{roomName}"})
     public void delete(@PathVariable String roomName){

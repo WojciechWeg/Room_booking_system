@@ -5,6 +5,7 @@ import com.wojtek.room_booking_system.dao.model.UserNoPassword;
 import com.wojtek.room_booking_system.services.UserService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,12 +21,12 @@ public class UserController {
     }
 
     @PutMapping()
-    public void createNewUser(@RequestBody User user) {
+    public void createNewUser(@Valid @RequestBody User user) {
         userService.createNewUser(user);
     }
 
     @PostMapping("/{userLogin}")
-    public void update(@PathVariable String userLogin, @RequestBody User user){ userService.updateUser(userLogin,user); }
+    public void update(@PathVariable String userLogin,@Valid @RequestBody User user){ userService.updateUser(userLogin,user); }
 
     @DeleteMapping({"/{userLogin}"})
     public void delete(@PathVariable String userLogin){

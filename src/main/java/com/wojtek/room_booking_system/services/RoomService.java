@@ -5,6 +5,7 @@ import com.wojtek.room_booking_system.dao.model.Room;
 import com.wojtek.room_booking_system.dao.model.RoomEntity;
 
 import com.wojtek.room_booking_system.dao.repositories.RoomRepository;
+import com.wojtek.room_booking_system.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,17 +24,21 @@ public class RoomService {
 
         RoomEntity roomEntity = new RoomEntity();
         roomEntity.setName(room.getName());
-        roomEntity.setLocation(room.getLocation());
         roomEntity.setNumberOfSeats(room.getNumberOfSeats());
-        roomEntity.setHasProjector(room.getHasProjector());
-        roomEntity.setPhoneNumber(room.getPhoneNumber());
+
+        if(room.getLocation()!=null )
+            roomEntity.setLocation(room.getLocation());
+        if(room.getHasProjector()!=null )
+            roomEntity.setHasProjector(room.getHasProjector());
+        if(room.getPhoneNumber()!=null )
+            roomEntity.setPhoneNumber(room.getPhoneNumber());
 
         roomRepository.save(roomEntity);
     }
 
     public void updateRoom(String roomName, Room room) {
 
-        RoomEntity roomEntityUpdated = roomRepository.findById(roomName).orElseThrow(()-> new RuntimeException("not found"));
+        RoomEntity roomEntityUpdated = roomRepository.findById(roomName).orElseThrow(ResourceNotFoundException::new);
 
         if(room.getLocation()!=null && !room.getLocation().isEmpty() && !room.getLocation().equals(roomEntityUpdated.getLocation()))
             roomEntityUpdated.setLocation(room.getLocation());
