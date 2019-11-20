@@ -38,7 +38,7 @@ public class RoomService {
 
     public void updateRoom(String roomName, Room room) {
 
-        RoomEntity roomEntityUpdated = roomRepository.findById(roomName).orElseThrow(ResourceNotFoundException::new);
+        RoomEntity roomEntityUpdated = roomRepository.findById(roomName).orElseThrow(()->new ResourceNotFoundException("No such room."));
 
         if(room.getLocation()!=null && !room.getLocation().isEmpty() && !room.getLocation().equals(roomEntityUpdated.getLocation()))
             roomEntityUpdated.setLocation(room.getLocation());

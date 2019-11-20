@@ -30,7 +30,7 @@ public class UserService {
 
     public void updateUser(String userLogin, User user) {
 
-        UserEntity userEntityUpdated = userRepository.findById(userLogin).orElseThrow(ResourceNotFoundException::new);
+        UserEntity userEntityUpdated = userRepository.findById(userLogin).orElseThrow(()-> new ResourceNotFoundException("No such user."));
 
         if(user.getName()!=null && !user.getName().isEmpty() && !user.getName().equals(userEntityUpdated.getName()) )
             userEntityUpdated.setName(user.getName());
