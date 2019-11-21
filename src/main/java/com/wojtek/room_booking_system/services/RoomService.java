@@ -1,10 +1,10 @@
 package com.wojtek.room_booking_system.services;
 
 
-import com.wojtek.room_booking_system.dao.model.Room;
-import com.wojtek.room_booking_system.dao.model.RoomEntity;
+import com.wojtek.room_booking_system.dto.Room;
+import com.wojtek.room_booking_system.dao.RoomEntity;
 
-import com.wojtek.room_booking_system.dao.repositories.RoomRepository;
+import com.wojtek.room_booking_system.repositories.RoomRepository;
 import com.wojtek.room_booking_system.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 

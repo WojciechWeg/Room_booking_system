@@ -1,9 +1,10 @@
-package com.wojtek.room_booking_system.dao.model;
+package com.wojtek.room_booking_system.dao;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -23,9 +24,9 @@ public class RoomBookingEntity {
     String userLogin;
 
     @Column(name="dateFrom")
-    Date dateFrom;
+    LocalDateTime dateFrom;
 
     @Column(name="dateTo")
-    Date dateTo;
+    LocalDateTime dateTo;
 
 }

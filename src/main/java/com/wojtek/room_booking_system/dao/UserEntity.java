@@ -1,4 +1,4 @@
-package com.wojtek.room_booking_system.dao.model;
+package com.wojtek.room_booking_system.dao;
 
 import lombok.Data;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.wojtek.room_booking_system.dao.model;
+package com.wojtek.room_booking_system.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -9,6 +9,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Date;
 @Setter
 @Getter
@@ -28,10 +29,10 @@ public class RoomBooking {
 
     @NotNull
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    Date dateFrom;
+    LocalDateTime dateFrom;
 
     @NotNull
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    Date dateTo;
+    LocalDateTime dateTo;
 
 }

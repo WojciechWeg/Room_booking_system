@@ -1,11 +1,13 @@
 package com.wojtek.room_booking_system.bootstrap;
 
-import com.wojtek.room_booking_system.dao.model.RoomEntity;
-import com.wojtek.room_booking_system.dao.model.UserEntity;
-import com.wojtek.room_booking_system.dao.repositories.RoomRepository;
-import com.wojtek.room_booking_system.dao.repositories.UserRepository;
+import com.wojtek.room_booking_system.dao.RoomEntity;
+import com.wojtek.room_booking_system.dao.UserEntity;
+import com.wojtek.room_booking_system.repositories.RoomRepository;
+import com.wojtek.room_booking_system.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Bootstrap implements CommandLineRunner {
 
     private final RoomRepository roomRepository;
@@ -26,10 +28,10 @@ public class Bootstrap implements CommandLineRunner {
         userEntity.setPassword("qwerty");
 
         UserEntity userEntity2 = new UserEntity();
-        userEntity.setName("Jane");
-        userEntity.setSurname("Doe");
-        userEntity.setLogin("jdoe");
-        userEntity.setPassword("mySecret");
+        userEntity2.setName("Jane");
+        userEntity2.setSurname("Doe");
+        userEntity2.setLogin("jdoe");
+        userEntity2.setPassword("mySecret");
 
         userRepository.save(userEntity);
         userRepository.save(userEntity2);
