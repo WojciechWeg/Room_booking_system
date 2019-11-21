@@ -33,11 +33,12 @@ public class RoomBookingController {
     public List<RoomBookingNameSurname> getBookingScheduleForAllRooms(@RequestParam String dateStart, @RequestParam String dateEnd){
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        if(dateEnd.equals("") && dateStart.equals(""))
+            return roomBookingService.getBookingScheduleForAllRooms(null, null);
         if(dateStart.equals(""))
             return roomBookingService.getBookingScheduleForAllRooms(null, LocalDateTime.parse(dateEnd,dateTimeFormatter));
         if(dateEnd.equals(""))
             return roomBookingService.getBookingScheduleForAllRooms(LocalDateTime.parse(dateStart,dateTimeFormatter), null);
-
         return roomBookingService.getBookingScheduleForAllRooms(LocalDateTime.parse(dateStart,dateTimeFormatter), LocalDateTime.parse(dateEnd,dateTimeFormatter));
 
     }
