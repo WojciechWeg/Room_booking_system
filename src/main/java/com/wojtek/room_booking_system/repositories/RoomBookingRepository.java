@@ -11,19 +11,15 @@ import java.util.List;
 
 public interface RoomBookingRepository extends JpaRepository<RoomBookingEntity,Long> {
 
-
     @Query("select rB from RoomBookingEntity rB where  rB.roomName =?3 and  ?1  between rB.dateStart and rB.dateEnd and ?2  between rB.dateStart and rB.dateEnd" )
-    List<RoomBookingEntity> selectBookingsWith(@Param("dateStartParam") LocalDateTime dateStartParam, @Param("dateEndParam") LocalDateTime dateEndParam, @Param("roomNameParam") String roomNameParam);
+    List<RoomBookingEntity> selectBookingsWithIn(@Param("dateStartParam") LocalDateTime dateStartParam, @Param("dateEndParam") LocalDateTime dateEndParam, @Param("roomNameParam") String roomNameParam);
 
-   // @Query("select rB from RoomBookingEntity rB where ?1  between rB.dateStart and rB.dateEnd and ?2  between rB.dateStart and rB.dateEnd")
-    @Query("select rB from RoomBookingEntity rB")
-    List<RoomBookingEntity> getAllBookingsFromTo(@Param("dateStartParam") LocalDateTime dateStartParam, @Param("dateEndParam") LocalDateTime dateEndParam);
+    @Query("select rB from RoomBookingEntity rB where ?1  between rB.dateStart and rB.dateEnd and ?2  between rB.dateStart and rB.dateEnd")
+    List<RoomBookingEntity> getAllBookingsWithIn(@Param("dateStartParam") LocalDateTime dateStartParam, @Param("dateEndParam") LocalDateTime dateEndParam);
 
-    //  @Query("select rB from RoomBookingEntity rB")
     @Query("select rB from RoomBookingEntity rB where ?1  < rB.dateStart")
-    List<RoomBookingEntity> getAllBookingsTo(@Param("dateEndParam") LocalDateTime dateEndParam);
+    List<RoomBookingEntity> getAllBookingsInPast(@Param("dateEndParam") LocalDateTime dateEndParam);
 
-    //@Query("select rB from RoomBookingEntity rB")
-    @Query("select rB from RoomBookingEntity rB where ?1  > rB.dateEnd")
-    List<RoomBookingEntity> getAllBookingsFrom(@Param("dateStartParam") LocalDateTime dateStartParam);
+    @Query("select rB from RoomBookingEntity rB where ?1  > rB.dateStart")
+    List<RoomBookingEntity> getAllBookingsInFuture(@Param("dateStartParam") LocalDateTime dateStartParam);
 }

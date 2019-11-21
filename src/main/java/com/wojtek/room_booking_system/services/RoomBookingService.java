@@ -43,7 +43,7 @@ public class RoomBookingService {
         userRepository.findById(roomBooking.getUserLogin()).orElseThrow(() ->  new ResourceNotFoundException("No such user."));
 
         List<RoomBookingEntity> roomBookingEntityList =
-                roomBookingRepository.selectBookingsWith(roomBooking.getDateStart(),roomBooking.getDateEnd(),roomBooking.getRoomName());
+                roomBookingRepository.selectBookingsWithIn(roomBooking.getDateStart(),roomBooking.getDateEnd(),roomBooking.getRoomName());
 
         if(!roomBookingEntityList.isEmpty())
             throw new RoomIsOccupiedException("Room is occupied at this time.");
@@ -57,18 +57,21 @@ public class RoomBookingService {
         roomBookingRepository.save(roomBookingEntity);
     }
 
-    public List<RoomBookingEntity> getBookingScheduleForAllRooms(LocalDateTime dateStart, LocalDateTime dateEnd) {
+    public List<RoomBookingNameSurname> getBookingScheduleForAllRooms(LocalDateTime dateStart, LocalDateTime dateEnd) {
 
         List<RoomBookingEntity> roomBookingEntityList = new LinkedList<>();
 
         if(dateStart!=null && dateEnd!=null)
-            roomBookingEntityList = roomBookingRepository.getAllBookingsFromTo(dateStart,dateEnd);
+            roomBookingEntityList = roomBookingRepository.getAllBookingsWithIn(dateStart,dateEnd);
 
         if(dateStart==null && dateEnd!=null)
-            roomBookingEntityList = roomBookingRepository.getAllBookingsTo(dateEnd);
+            roomBookingEntityList = roomBookingRepository.getAllBookingsInPast(dateEnd);
 
         if (dateStart!=null && dateEnd==null)
-            roomBookingEntityList = roomBookingRepository.getAllBookingsFrom(dateStart);
+            roomBookingEntityList = roomBookingRepository.getAllBookingsInFuture(dateStart);
+
+        if(dateStart==null && dateEnd==null)
+            roomBookingEntityList = roomBookingRepository.findAll();
 
 
         List<RoomBookingNameSurname> roomBookingNameSurnameList = new LinkedList<>();
@@ -88,7 +91,7 @@ public class RoomBookingService {
 
         }
 
-        return roomBookingEntityList;
+        return roomBookingNameSurnameList;
 
     }
 }

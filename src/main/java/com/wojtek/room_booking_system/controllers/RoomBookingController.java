@@ -30,7 +30,7 @@ public class RoomBookingController {
     }
 
     @GetMapping()
-    public List<RoomBookingEntity> getBookingScheduleForAllRooms(@RequestParam String dateStart, @RequestParam String dateEnd){
+    public List<RoomBookingNameSurname> getBookingScheduleForAllRooms(@RequestParam String dateStart, @RequestParam String dateEnd){
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         if(dateStart.equals(""))
