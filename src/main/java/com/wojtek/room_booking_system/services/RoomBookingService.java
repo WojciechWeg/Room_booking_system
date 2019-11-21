@@ -32,6 +32,9 @@ public class RoomBookingService {
 
     public void bookTheRoom(RoomBooking roomBooking) {
 
+        if(roomBooking.getDateEnd().isBefore(LocalDateTime.now()) || roomBooking.getDateStart().isBefore(LocalDateTime.now()))
+            throw new DateMisfilled("You cant book room in the past");
+
         if(roomBooking.getDateEnd().equals(roomBooking.getDateStart()))
             throw new DateMisfilled("End date is the same like start date.");
 
