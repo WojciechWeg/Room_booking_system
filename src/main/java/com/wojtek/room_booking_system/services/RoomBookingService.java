@@ -13,7 +13,6 @@ import com.wojtek.room_booking_system.exceptions.RoomIsOccupiedException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -32,14 +31,7 @@ public class RoomBookingService {
 
     public void bookTheRoom(RoomBooking roomBooking) {
 
-        if(roomBooking.getDateEnd().isBefore(LocalDateTime.now()) || roomBooking.getDateStart().isBefore(LocalDateTime.now()))
-            throw new DateMisfilled("You cant book room in the past");
-
-        if(roomBooking.getDateEnd().equals(roomBooking.getDateStart()))
-            throw new DateMisfilled("End date is the same like start date.");
-
-        if(roomBooking.getDateEnd().isBefore(roomBooking.getDateStart()))
-            throw new DateMisfilled("End date can't be before start date.");
+        dateCheck(roomBooking.getDateStart(),roomBooking.getDateEnd());
 
         roomRepository.findById(roomBooking.getRoomName()).orElseThrow(() ->  new ResourceNotFoundException("No such room."));
 
@@ -60,20 +52,22 @@ public class RoomBookingService {
         roomBookingRepository.save(roomBookingEntity);
     }
 
+
     public List<RoomBookingNameSurname> getBookingScheduleForAllRooms(LocalDateTime dateStart, LocalDateTime dateEnd) {
+        dateCheck( dateStart,  dateEnd);
 
         List<RoomBookingEntity> roomBookingEntityList = new LinkedList<>();
 
-        if(dateStart!=null && dateEnd!=null)
+        if(!dateStart.toString().equals("") && !dateEnd.toString().equals(""))
             roomBookingEntityList = roomBookingRepository.getAllBookingsWithIn(dateStart,dateEnd);
 
-        if(dateStart==null && dateEnd!=null)
+        if(dateStart.toString().equals("") && !dateEnd.toString().equals(""))
             roomBookingEntityList = roomBookingRepository.getAllBookingsInPast(dateEnd);
 
-        if (dateStart!=null && dateEnd==null)
+        if (!dateStart.toString().equals("") && dateEnd.toString().equals(""))
             roomBookingEntityList = roomBookingRepository.getAllBookingsInFuture(dateStart);
 
-        if(dateStart==null && dateEnd==null)
+        if(dateStart.toString().equals("") && dateEnd.toString().equals(""))
             roomBookingEntityList = roomBookingRepository.findAll();
 
 
@@ -82,27 +76,50 @@ public class RoomBookingService {
     }
 
     public List<RoomBookingNameSurname> getBookingScheduleForGivenRoom(LocalDateTime dateStart, LocalDateTime dateEnd, String roomName) {
-
+        dateCheck( dateStart,  dateEnd);
         roomRepository.findById(roomName).orElseThrow(()-> new ResourceNotFoundException("No such room"));
 
 
         List<RoomBookingEntity> roomBookingEntityList = new LinkedList<>();
 
-        if(dateStart!=null && dateEnd!=null)
+        if(!dateStart.toString().equals("") && !dateEnd.toString().equals(""))
             roomBookingEntityList = roomBookingRepository.getAllBookingsWithInDateFrameAndRoom(dateStart,dateEnd,roomName);
 
-        if(dateStart==null && dateEnd!=null)
+        if(dateStart.toString().equals("") && !dateEnd.toString().equals(""))
             roomBookingEntityList = roomBookingRepository.getAllBookingsInPastAndRoom(dateEnd,roomName);
 
-        if (dateStart!=null && dateEnd==null)
+        if (!dateStart.toString().equals("") && dateEnd.toString().equals(""))
             roomBookingEntityList = roomBookingRepository.getAllBookingsInFutureAndRoom(dateStart,roomName);
 
-        if(dateStart==null && dateEnd==null)
+        if(dateStart.toString().equals("") && dateEnd.toString().equals(""))
             roomBookingEntityList = roomBookingRepository.getAllBookingsInRoom(roomName);
 
 
         return mapBookings(roomBookingEntityList);
 
+    }
+
+    public List<RoomBookingNameSurname> getBookingScheduleForGivenUser(LocalDateTime dateStart, LocalDateTime dateEnd, String userLogin) {
+        dateCheck( dateStart,  dateEnd);
+
+        userRepository.findById(userLogin).orElseThrow(()-> new ResourceNotFoundException("No such user"));
+
+        List<RoomBookingEntity> roomBookingEntityList = new LinkedList<>();
+
+        if(!dateStart.toString().equals("") && !dateEnd.toString().equals(""))
+            roomBookingEntityList = roomBookingRepository.getAllBookingsWithInDateFrameAndUser(dateStart,dateEnd,userLogin);
+
+        if(dateStart.toString().equals("") && !dateEnd.toString().equals(""))
+            roomBookingEntityList = roomBookingRepository.getAllBookingsInPastAndUser(dateEnd,userLogin);
+
+        if (!dateStart.toString().equals("") && dateEnd.toString().equals(""))
+            roomBookingEntityList = roomBookingRepository.getAllBookingsInFutureAndUser(dateStart,userLogin);
+
+        if(dateStart.toString().equals("") && dateEnd.toString().equals(""))
+            roomBookingEntityList = roomBookingRepository.getAllBookingsForUser(userLogin);
+
+
+        return mapBookings(roomBookingEntityList);
 
     }
 
@@ -126,4 +143,17 @@ public class RoomBookingService {
 
         return roomBookingNameSurnameList;
     }
+
+    private void dateCheck(LocalDateTime dateStart, LocalDateTime dateEnd) {
+        if(dateEnd.isBefore(LocalDateTime.now()) || dateStart.isBefore(LocalDateTime.now()))
+            throw new DateMisfilled("You cant book room in the past");
+
+        if(dateEnd.equals(dateStart))
+            throw new DateMisfilled("End date is the same like start date.");
+
+        if(dateEnd.isBefore(dateStart))
+            throw new DateMisfilled("End date can't be before start date.");
+    }
+
+
 }

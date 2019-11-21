@@ -32,5 +32,16 @@ public interface RoomBookingRepository extends JpaRepository<RoomBookingEntity,L
     @Query("select rB from RoomBookingEntity rB where  rB.roomName = ?1")
     List<RoomBookingEntity> getAllBookingsInRoom(String roomName);
 
+    @Query("select rB from RoomBookingEntity rB where ?1  between rB.dateStart and rB.dateEnd and ?2  between rB.dateStart and rB.dateEnd and rB.userLogin = ?3")
+    List<RoomBookingEntity> getAllBookingsWithInDateFrameAndUser(@Param("dateStartParam") LocalDateTime dateStartParam, @Param("dateEndParam") LocalDateTime dateEndParam, @Param("roomName") String roomName);
+
+    @Query("select rB from RoomBookingEntity rB where ?1  < rB.dateStart and rB.userLogin = ?2 ")
+    List<RoomBookingEntity> getAllBookingsInPastAndUser(LocalDateTime dateEnd, String login);
+
+    @Query("select rB from RoomBookingEntity rB where ?1  > rB.dateStart and rB.userLogin = ?2")
+    List<RoomBookingEntity> getAllBookingsInFutureAndUser(LocalDateTime dateStart, String login);
+
+    @Query("select rB from RoomBookingEntity rB where  rB.userLogin = ?1")
+    List<RoomBookingEntity> getAllBookingsForUser(String login);
 
 }
