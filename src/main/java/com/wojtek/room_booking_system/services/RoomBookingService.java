@@ -32,10 +32,10 @@ public class RoomBookingService {
 
     public void bookTheRoom(RoomBooking roomBooking) {
 
-        if(roomBooking.getDateTo().equals(roomBooking.getDateFrom()))
+        if(roomBooking.getDateEnd().equals(roomBooking.getDateStart()))
             throw new DateMisfilled("End date is the same like start date.");
 
-        if(roomBooking.getDateTo().isBefore(roomBooking.getDateFrom()))
+        if(roomBooking.getDateEnd().isBefore(roomBooking.getDateStart()))
             throw new DateMisfilled("End date can't be before start date.");
 
         roomRepository.findById(roomBooking.getRoomName()).orElseThrow(() ->  new ResourceNotFoundException("No such room."));
@@ -43,7 +43,7 @@ public class RoomBookingService {
         userRepository.findById(roomBooking.getUserLogin()).orElseThrow(() ->  new ResourceNotFoundException("No such user."));
 
         List<RoomBookingEntity> roomBookingEntityList =
-                roomBookingRepository.selectBookingsWith(roomBooking.getDateFrom(),roomBooking.getDateTo(),roomBooking.getRoomName());
+                roomBookingRepository.selectBookingsWith(roomBooking.getDateStart(),roomBooking.getDateEnd(),roomBooking.getRoomName());
 
         if(!roomBookingEntityList.isEmpty())
             throw new RoomIsOccupiedException("Room is occupied at this time.");
@@ -51,24 +51,24 @@ public class RoomBookingService {
         RoomBookingEntity roomBookingEntity = new RoomBookingEntity();
         roomBookingEntity.setRoomName(roomBooking.getRoomName());
         roomBookingEntity.setUserLogin(roomBooking.getUserLogin());
-        roomBookingEntity.setDateFrom(roomBooking.getDateFrom());
-        roomBookingEntity.setDateTo(roomBooking.getDateTo());
+        roomBookingEntity.setDateStart(roomBooking.getDateStart());
+        roomBookingEntity.setDateEnd(roomBooking.getDateEnd());
 
         roomBookingRepository.save(roomBookingEntity);
     }
 
-    public List<RoomBookingEntity> getBookingScheduleForAllRooms(LocalDateTime dateFrom, LocalDateTime dateTo) {
+    public List<RoomBookingEntity> getBookingScheduleForAllRooms(LocalDateTime dateStart, LocalDateTime dateEnd) {
 
         List<RoomBookingEntity> roomBookingEntityList = new LinkedList<>();
 
-        if(dateFrom!=null && dateTo!=null)
-            roomBookingEntityList = roomBookingRepository.getAllBookingsFromTo(dateFrom,dateTo);
+        if(dateStart!=null && dateEnd!=null)
+            roomBookingEntityList = roomBookingRepository.getAllBookingsFromTo(dateStart,dateEnd);
 
-        if(dateFrom==null && dateTo!=null)
-            roomBookingEntityList = roomBookingRepository.getAllBookingsTo(dateTo);
+        if(dateStart==null && dateEnd!=null)
+            roomBookingEntityList = roomBookingRepository.getAllBookingsTo(dateEnd);
 
-        if (dateFrom!=null && dateTo==null)
-            roomBookingEntityList = roomBookingRepository.getAllBookingsFrom(dateFrom);
+        if (dateStart!=null && dateEnd==null)
+            roomBookingEntityList = roomBookingRepository.getAllBookingsFrom(dateStart);
 
 
         List<RoomBookingNameSurname> roomBookingNameSurnameList = new LinkedList<>();
@@ -80,8 +80,8 @@ public class RoomBookingService {
 
                 roomBookingNameSurname.setUserName(userEntity.getName());
                 roomBookingNameSurname.setUserSurname(userEntity.getSurname());
-                roomBookingNameSurname.setDateFrom(item.getDateFrom());
-                roomBookingNameSurname.setDateTo(item.getDateTo());
+                roomBookingNameSurname.setDateStart(item.getDateStart());
+                roomBookingNameSurname.setDateEnd(item.getDateEnd());
                 roomBookingNameSurname.setRoomName(item.getRoomName());
 
                 roomBookingNameSurnameList.add(roomBookingNameSurname);

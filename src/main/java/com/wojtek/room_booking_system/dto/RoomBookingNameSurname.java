@@ -34,11 +34,11 @@ public class RoomBookingNameSurname {
 
     @NotNull
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    LocalDateTime dateFrom;
+    LocalDateTime dateStart;
 
     @NotNull
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    LocalDateTime dateTo;
+    LocalDateTime dateEnd;
 
 
 }

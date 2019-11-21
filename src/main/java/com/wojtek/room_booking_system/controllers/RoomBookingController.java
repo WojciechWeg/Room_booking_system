@@ -30,15 +30,15 @@ public class RoomBookingController {
     }
 
     @GetMapping()
-    public List<RoomBookingEntity> getBookingScheduleForAllRooms(@RequestParam String dateFrom, @RequestParam String dateTo){
+    public List<RoomBookingEntity> getBookingScheduleForAllRooms(@RequestParam String dateStart, @RequestParam String dateEnd){
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        if(dateFrom.equals(""))
-            return roomBookingService.getBookingScheduleForAllRooms(null, LocalDateTime.parse(dateTo,dateTimeFormatter));
-        if(dateTo.equals(""))
-            return roomBookingService.getBookingScheduleForAllRooms(LocalDateTime.parse(dateFrom,dateTimeFormatter), null);
+        if(dateStart.equals(""))
+            return roomBookingService.getBookingScheduleForAllRooms(null, LocalDateTime.parse(dateEnd,dateTimeFormatter));
+        if(dateEnd.equals(""))
+            return roomBookingService.getBookingScheduleForAllRooms(LocalDateTime.parse(dateStart,dateTimeFormatter), null);
 
-        return roomBookingService.getBookingScheduleForAllRooms(LocalDateTime.parse(dateFrom,dateTimeFormatter), LocalDateTime.parse(dateTo,dateTimeFormatter));
+        return roomBookingService.getBookingScheduleForAllRooms(LocalDateTime.parse(dateStart,dateTimeFormatter), LocalDateTime.parse(dateEnd,dateTimeFormatter));
 
     }
 

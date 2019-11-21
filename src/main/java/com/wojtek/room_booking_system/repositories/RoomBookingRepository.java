@@ -12,18 +12,18 @@ import java.util.List;
 public interface RoomBookingRepository extends JpaRepository<RoomBookingEntity,Long> {
 
 
-    @Query("select rB from RoomBookingEntity rB where  rB.roomName =?3 and  ?1  between rB.dateFrom and rB.dateTo and ?2  between rB.dateFrom and rB.dateTo" )
-    List<RoomBookingEntity> selectBookingsWith(@Param("dateFromParam") LocalDateTime dateFromParam, @Param("dateToParam") LocalDateTime dateToParam, @Param("roomNameParam") String roomNameParam);
+    @Query("select rB from RoomBookingEntity rB where  rB.roomName =?3 and  ?1  between rB.dateStart and rB.dateEnd and ?2  between rB.dateStart and rB.dateEnd" )
+    List<RoomBookingEntity> selectBookingsWith(@Param("dateStartParam") LocalDateTime dateStartParam, @Param("dateEndParam") LocalDateTime dateEndParam, @Param("roomNameParam") String roomNameParam);
 
-   // @Query("select rB from RoomBookingEntity rB where ?1  between rB.dateFrom and rB.dateTo and ?2  between rB.dateFrom and rB.dateTo")
+   // @Query("select rB from RoomBookingEntity rB where ?1  between rB.dateStart and rB.dateEnd and ?2  between rB.dateStart and rB.dateEnd")
     @Query("select rB from RoomBookingEntity rB")
-    List<RoomBookingEntity> getAllBookingsFromTo(@Param("dateFromParam") LocalDateTime dateFromParam, @Param("dateToParam") LocalDateTime dateToParam);
+    List<RoomBookingEntity> getAllBookingsFromTo(@Param("dateStartParam") LocalDateTime dateStartParam, @Param("dateEndParam") LocalDateTime dateEndParam);
 
-   // @Query("select rB from RoomBookingEntity rB where ?1  < rB.dateFrom")
-     @Query("select rB from RoomBookingEntity rB")
-    List<RoomBookingEntity> getAllBookingsTo(@Param("dateToParam") LocalDateTime dateToParam);
+    //  @Query("select rB from RoomBookingEntity rB")
+    @Query("select rB from RoomBookingEntity rB where ?1  < rB.dateStart")
+    List<RoomBookingEntity> getAllBookingsTo(@Param("dateEndParam") LocalDateTime dateEndParam);
 
-    //@Query("select rB from RoomBookingEntity rB where ?1  > rB.dateTo")
-    @Query("select rB from RoomBookingEntity rB")
-    List<RoomBookingEntity> getAllBookingsFrom(@Param("dateFromParam") LocalDateTime dateFromParam);
+    //@Query("select rB from RoomBookingEntity rB")
+    @Query("select rB from RoomBookingEntity rB where ?1  > rB.dateEnd")
+    List<RoomBookingEntity> getAllBookingsFrom(@Param("dateStartParam") LocalDateTime dateStartParam);
 }

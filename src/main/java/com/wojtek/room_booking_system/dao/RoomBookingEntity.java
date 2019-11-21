@@ -5,7 +5,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name="roomBookings")
@@ -23,10 +22,10 @@ public class RoomBookingEntity {
     @Column(name="userLogin")
     String userLogin;
 
-    @Column(name="dateFrom")
-    LocalDateTime dateFrom;
+    @Column(name="dateStart")
+    LocalDateTime dateStart;
 
-    @Column(name="dateTo")
-    LocalDateTime dateTo;
+    @Column(name="dateEnd")
+    LocalDateTime dateEnd;
 
 }
