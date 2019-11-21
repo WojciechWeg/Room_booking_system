@@ -43,6 +43,18 @@ public class RoomBookingController {
 
     }
 
+    @GetMapping({"/givenRoom"})
+    public List<RoomBookingNameSurname> getBookingScheduleForGivenRoom(@RequestParam String dateStart, @RequestParam String dateEnd, @RequestParam String roomName){
 
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        if(dateEnd.equals("") && dateStart.equals(""))
+            return roomBookingService.getBookingScheduleForGivenRoom(null, null,roomName);
+        if(dateStart.equals(""))
+            return roomBookingService.getBookingScheduleForGivenRoom(null, LocalDateTime.parse(dateEnd,dateTimeFormatter),roomName);
+        if(dateEnd.equals(""))
+            return roomBookingService.getBookingScheduleForGivenRoom(LocalDateTime.parse(dateStart,dateTimeFormatter), null,roomName);
+        return roomBookingService.getBookingScheduleForGivenRoom(LocalDateTime.parse(dateStart,dateTimeFormatter), LocalDateTime.parse(dateEnd,dateTimeFormatter),roomName);
+
+    }
 
 }

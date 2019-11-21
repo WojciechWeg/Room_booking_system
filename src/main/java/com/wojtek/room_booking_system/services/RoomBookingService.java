@@ -46,7 +46,7 @@ public class RoomBookingService {
         userRepository.findById(roomBooking.getUserLogin()).orElseThrow(() ->  new ResourceNotFoundException("No such user."));
 
         List<RoomBookingEntity> roomBookingEntityList =
-                roomBookingRepository.selectBookingsWithIn(roomBooking.getDateStart(),roomBooking.getDateEnd(),roomBooking.getRoomName());
+                roomBookingRepository.getAllBookingsWithInDateFrameAndRoom(roomBooking.getDateStart(),roomBooking.getDateEnd(),roomBooking.getRoomName());
 
         if(!roomBookingEntityList.isEmpty())
             throw new RoomIsOccupiedException("Room is occupied at this time.");
@@ -77,24 +77,53 @@ public class RoomBookingService {
             roomBookingEntityList = roomBookingRepository.findAll();
 
 
+        return mapBookings(roomBookingEntityList);
+
+    }
+
+    public List<RoomBookingNameSurname> getBookingScheduleForGivenRoom(LocalDateTime dateStart, LocalDateTime dateEnd, String roomName) {
+
+        roomRepository.findById(roomName).orElseThrow(()-> new ResourceNotFoundException("No such room"));
+
+
+        List<RoomBookingEntity> roomBookingEntityList = new LinkedList<>();
+
+        if(dateStart!=null && dateEnd!=null)
+            roomBookingEntityList = roomBookingRepository.getAllBookingsWithInDateFrameAndRoom(dateStart,dateEnd,roomName);
+
+        if(dateStart==null && dateEnd!=null)
+            roomBookingEntityList = roomBookingRepository.getAllBookingsInPastAndRoom(dateEnd,roomName);
+
+        if (dateStart!=null && dateEnd==null)
+            roomBookingEntityList = roomBookingRepository.getAllBookingsInFutureAndRoom(dateStart,roomName);
+
+        if(dateStart==null && dateEnd==null)
+            roomBookingEntityList = roomBookingRepository.getAllBookingsInRoom(roomName);
+
+
+        return mapBookings(roomBookingEntityList);
+
+
+    }
+
+    private List<RoomBookingNameSurname> mapBookings(List<RoomBookingEntity> roomBookingEntityList) {
         List<RoomBookingNameSurname> roomBookingNameSurnameList = new LinkedList<>();
-        for ( RoomBookingEntity item: roomBookingEntityList) {
+        for (RoomBookingEntity item : roomBookingEntityList) {
 
-                RoomBookingNameSurname roomBookingNameSurname = new RoomBookingNameSurname();
+            RoomBookingNameSurname roomBookingNameSurname = new RoomBookingNameSurname();
 
-                UserEntity userEntity = userRepository.findById(item.getUserLogin()).orElseThrow( ()->new ResourceNotFoundException("There is no such a user."));
+            UserEntity userEntity = userRepository.findById(item.getUserLogin()).orElseThrow(() -> new ResourceNotFoundException("There is no such a user."));
 
-                roomBookingNameSurname.setUserName(userEntity.getName());
-                roomBookingNameSurname.setUserSurname(userEntity.getSurname());
-                roomBookingNameSurname.setDateStart(item.getDateStart());
-                roomBookingNameSurname.setDateEnd(item.getDateEnd());
-                roomBookingNameSurname.setRoomName(item.getRoomName());
+            roomBookingNameSurname.setUserName(userEntity.getName());
+            roomBookingNameSurname.setUserSurname(userEntity.getSurname());
+            roomBookingNameSurname.setDateStart(item.getDateStart());
+            roomBookingNameSurname.setDateEnd(item.getDateEnd());
+            roomBookingNameSurname.setRoomName(item.getRoomName());
 
-                roomBookingNameSurnameList.add(roomBookingNameSurname);
+            roomBookingNameSurnameList.add(roomBookingNameSurname);
 
         }
 
         return roomBookingNameSurnameList;
-
     }
 }

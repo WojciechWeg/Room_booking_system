@@ -11,9 +11,6 @@ import java.util.List;
 
 public interface RoomBookingRepository extends JpaRepository<RoomBookingEntity,Long> {
 
-    @Query("select rB from RoomBookingEntity rB where  rB.roomName =?3 and  ?1  between rB.dateStart and rB.dateEnd and ?2  between rB.dateStart and rB.dateEnd" )
-    List<RoomBookingEntity> selectBookingsWithIn(@Param("dateStartParam") LocalDateTime dateStartParam, @Param("dateEndParam") LocalDateTime dateEndParam, @Param("roomNameParam") String roomNameParam);
-
     @Query("select rB from RoomBookingEntity rB where ?1  between rB.dateStart and rB.dateEnd and ?2  between rB.dateStart and rB.dateEnd")
     List<RoomBookingEntity> getAllBookingsWithIn(@Param("dateStartParam") LocalDateTime dateStartParam, @Param("dateEndParam") LocalDateTime dateEndParam);
 
@@ -22,4 +19,18 @@ public interface RoomBookingRepository extends JpaRepository<RoomBookingEntity,L
 
     @Query("select rB from RoomBookingEntity rB where ?1  > rB.dateStart")
     List<RoomBookingEntity> getAllBookingsInFuture(@Param("dateStartParam") LocalDateTime dateStartParam);
+
+    @Query("select rB from RoomBookingEntity rB where ?1  between rB.dateStart and rB.dateEnd and ?2  between rB.dateStart and rB.dateEnd and rB.roomName = ?3")
+    List<RoomBookingEntity> getAllBookingsWithInDateFrameAndRoom(@Param("dateStartParam") LocalDateTime dateStartParam, @Param("dateEndParam") LocalDateTime dateEndParam, @Param("roomName") String roomName);
+
+    @Query("select rB from RoomBookingEntity rB where ?1  < rB.dateStart and rB.roomName = ?2 ")
+    List<RoomBookingEntity> getAllBookingsInPastAndRoom(LocalDateTime dateEnd, String roomName);
+
+    @Query("select rB from RoomBookingEntity rB where ?1  > rB.dateStart and rB.roomName = ?2")
+    List<RoomBookingEntity> getAllBookingsInFutureAndRoom(LocalDateTime dateStart, String roomName);
+
+    @Query("select rB from RoomBookingEntity rB where  rB.roomName = ?1")
+    List<RoomBookingEntity> getAllBookingsInRoom(String roomName);
+
+
 }
