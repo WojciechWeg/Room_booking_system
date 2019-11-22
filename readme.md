@@ -1,4 +1,4 @@
-#Room booking system
+# Room booking system
 
 Aim of this project was to create REST API that would allow to book rooms available in the office.
 Application is able to:
@@ -8,7 +8,6 @@ Application is able to:
 - present booking schedule for all rooms for particular time frame
 - present booking schedule for selected room for particular time frame
 - present booking schedule for a user for particular time frame
-
 
 ## Manage user
 
